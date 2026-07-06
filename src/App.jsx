@@ -1,21 +1,48 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Plus, Upload, BookOpen, Zap, BarChart3, Brain, Trash2, Phone, MessageCircle, Copy, CheckCircle, AlertCircle, Download, Send, Settings, Menu, X } from 'lucide-react';
+import { supabase } from './supabaseClient';
 
 export default function AppFinalCompleta() {
-  const [knowledge, setKnowledge] = useState(() => {
-    const saved = localStorage.getItem('appFinalKnowledge');
-    return saved ? JSON.parse(saved) : {
-      materiais: [],
-      casos: [],
-      padroes: {},
-      ultimaAtualizacao: new Date().toLocaleDateString()
-    };
+  const [knowledge, setKnowledge] = useState({
+    materiais: [],
+    casos: [],
+    padroes: {},
+    ultimaAtualizacao: new Date().toLocaleDateString()
   });
 
-  const [leads, setLeads] = useState(() => {
-    const saved = localStorage.getItem('appFinalLeads');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [leads, setLeads] = useState([]);
+  const [loadingData, setLoadingData] = useState(true);
+
+  useEffect(() => {
+    const loadRemoteData = async () => {
+      try {
+        const { data, error } = await supabase.from('app_state').select('key, value');
+        if (!error && data) {
+          const knowledgeRow = data.find(r => r.key === 'knowledge');
+          const leadsRow = data.find(r => r.key === 'leads');
+          if (knowledgeRow) {
+            setKnowledge(knowledgeRow.value);
+          } else {
+            const savedK = localStorage.getItem('appFinalKnowledge');
+            if (savedK) setKnowledge(JSON.parse(savedK));
+          }
+          if (leadsRow) {
+            setLeads(leadsRow.value);
+          } else {
+            const savedL = localStorage.getItem('appFinalLeads');
+            if (savedL) setLeads(JSON.parse(savedL));
+          }
+        }
+      } catch (e) {
+        const savedK = localStorage.getItem('appFinalKnowledge');
+        if (savedK) setKnowledge(JSON.parse(savedK));
+        const savedL = localStorage.getItem('appFinalLeads');
+        if (savedL) setLeads(JSON.parse(savedL));
+      }
+      setLoadingData(false);
+    };
+    loadRemoteData();
+  }, []);
 
   const [activeTab, setActiveTab] = useState('dashboard');
   const [selectedLead, setSelectedLead] = useState(null);
@@ -39,11 +66,13 @@ export default function AppFinalCompleta() {
   const saveKnowledge = (updated) => {
     setKnowledge(updated);
     localStorage.setItem('appFinalKnowledge', JSON.stringify(updated));
+    supabase.from('app_state').upsert({ key: 'knowledge', value: updated, updated_at: new Date().toISOString() }).then(() => {});
   };
 
   const saveLeads = (updated) => {
     setLeads(updated);
     localStorage.setItem('appFinalLeads', JSON.stringify(updated));
+    supabase.from('app_state').upsert({ key: 'leads', value: updated, updated_at: new Date().toISOString() }).then(() => {});
   };
 
   const addLead = () => {
@@ -411,6 +440,14 @@ export default function AppFinalCompleta() {
       </div>
     </div>
   );
+
+  if (loadingData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-gray-500 font-bold">Carregando...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gray-50 min-h-screen pb-24">
