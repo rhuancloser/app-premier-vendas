@@ -191,7 +191,7 @@ export default function AppFinalCompleta() {
 
   const recomendacoes = gerarRecomendacoes();
 
-  const DashboardTab = () => (
+  const dashboardTab = (
     <div className="pb-24 space-y-4 p-4">
       <div className="bg-gradient-to-r from-purple-500 to-pink-600 text-white p-4 rounded-lg">
         <h2 className="font-bold text-2xl">Dashboard IA Completo</h2>
@@ -247,7 +247,7 @@ export default function AppFinalCompleta() {
     </div>
   );
 
-  const LeadsTab = () => (
+  const leadsTab = (
     <div className="pb-24">
       <div className="p-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white rounded-b-xl">
         <h2 className="text-xl font-bold">Leads & Vendas</h2>
@@ -329,7 +329,7 @@ export default function AppFinalCompleta() {
     </div>
   );
 
-  const ConhecimentoTab = () => (
+  const conhecimentoTab = (
     <div className="pb-24">
       <div className="p-4 bg-gradient-to-r from-blue-500 to-cyan-600 text-white rounded-b-xl">
         <h2 className="text-xl font-bold">Base de Conhecimento</h2>
@@ -390,7 +390,7 @@ export default function AppFinalCompleta() {
     </div>
   );
 
-  const RelatorioTab = () => (
+  const relatorioTab = (
     <div className="pb-24 space-y-4 p-4">
       <div className="bg-gradient-to-r from-purple-500 to-pink-600 text-white p-4 rounded-lg">
         <h2 className="font-bold text-lg">Relatorio Semanal</h2>
@@ -451,10 +451,10 @@ export default function AppFinalCompleta() {
 
   return (
     <div className="bg-gray-50 min-h-screen pb-24">
-      {activeTab === 'dashboard' && <DashboardTab />}
-      {activeTab === 'leads' && <LeadsTab />}
-      {activeTab === 'conhecimento' && <ConhecimentoTab />}
-      {activeTab === 'relatorio' && <RelatorioTab />}
+      {activeTab === 'dashboard' && {dashboardTab}}
+      {activeTab === 'leads' && {leadsTab}}
+      {activeTab === 'conhecimento' && {conhecimentoTab}}
+      {activeTab === 'relatorio' && {relatorioTab}}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300 flex gap-1 p-2">
         <button onClick={() => setActiveTab('dashboard')} className={`flex-1 py-3 rounded-lg font-bold text-sm flex items-center justify-center gap-1 ${activeTab === 'dashboard' ? 'bg-purple-500 text-white' : 'bg-gray-100'}`}>
           <Brain className="w-4 h-4" /> IA
