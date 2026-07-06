@@ -451,10 +451,10 @@ export default function AppFinalCompleta() {
 
   return (
     <div className="bg-gray-50 min-h-screen pb-24">
-      {activeTab === 'dashboard' && {dashboardTab}}
-      {activeTab === 'leads' && {leadsTab}}
-      {activeTab === 'conhecimento' && {conhecimentoTab}}
-      {activeTab === 'relatorio' && {relatorioTab}}
+      {activeTab === 'dashboard' && dashboardTab}
+      {activeTab === 'leads' && leadsTab}
+      {activeTab === 'conhecimento' && conhecimentoTab}
+      {activeTab === 'relatorio' && relatorioTab}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300 flex gap-1 p-2">
         <button onClick={() => setActiveTab('dashboard')} className={`flex-1 py-3 rounded-lg font-bold text-sm flex items-center justify-center gap-1 ${activeTab === 'dashboard' ? 'bg-purple-500 text-white' : 'bg-gray-100'}`}>
           <Brain className="w-4 h-4" /> IA
