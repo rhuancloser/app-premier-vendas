@@ -287,7 +287,7 @@ export default function AppFinalCompleta() {
               <span className="bg-emerald-100 text-emerald-900 text-xs font-bold px-2 rounded">{calculateScore(lead)}</span>
             </div>
             {selectedLead?.id === lead.id && (
-              <div className="mt-3 space-y-2 bg-emerald-50 p-3 rounded">
+              <div className="mt-3 space-y-2 bg-emerald-50 p-3 rounded" onClick={(e) => e.stopPropagation()}>
                 {messages.map(msg => (
                   <div key={msg.num} className={`text-xs p-2 rounded border-l-2 ${lead.mensagens[msg.num - 1] ? 'bg-green-50 border-green-500' : 'bg-gray-50 border-gray-300'}`}>
                     <p className="font-bold mb-1">Msg {msg.num}: {msg.titulo} ({msg.timing})</p>
